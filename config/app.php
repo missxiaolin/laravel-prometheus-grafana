@@ -183,6 +183,10 @@ return [
         // sql
         App\Providers\SqlQueryServiceProvider::class,
 
+        // es
+        Laravel\Scout\ScoutServiceProvider::class,
+        Lin\LaravelScoutElasticsearch\ElasticsearchServiceProvider::class,
+
     ],
 
     /*
