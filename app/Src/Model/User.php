@@ -19,6 +19,8 @@ class User extends Model
 {
     use Searchable;
 
+    protected $table = 'user';
+
     /**
      * 索引的字段
      *
