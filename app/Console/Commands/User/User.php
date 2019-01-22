@@ -11,7 +11,7 @@ class User extends Command
      *
      * @var string
      */
-    protected $signature = 'user:test';
+    protected $signature = 'user:test {--model=} {--command=}';
 
     /**
      * The console command description.
@@ -37,7 +37,16 @@ class User extends Command
      */
     public function handle()
     {
-        $model = new \App\Src\Model\User();
-        dd($model->getConnection());
+        $command = $this->option('command');
+        $class = $this->option('model');
+        if ($class) {
+            $model = new $class;
+            dump($model->getConnection());
+        }
+
+
+        if ($command) {
+            $this->call($command);
+        }
     }
 }
