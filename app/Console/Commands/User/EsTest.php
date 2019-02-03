@@ -37,6 +37,6 @@ class EsTest extends Command
      */
     public function handle()
     {
-        
+
     }
 }
