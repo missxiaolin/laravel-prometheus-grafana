@@ -187,6 +187,9 @@ return [
         Laravel\Scout\ScoutServiceProvider::class,
         Lin\LaravelScoutElasticsearch\ElasticsearchServiceProvider::class,
 
+        // apollo
+        \App\Providers\ApolloProvider::class,
+
     ],
 
     /*

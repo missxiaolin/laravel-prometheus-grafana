@@ -11,14 +11,16 @@ class Value extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'ue:apollo:value
+    { name : 键名,支持使用.的形式 }
+    ';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '阿波罗测试';
 
     /**
      * Create a new command instance.
@@ -38,5 +40,8 @@ class Value extends Command
     public function handle()
     {
         //
+        $name = $this->argument('name');
+
+        dd(app('apollo')->get($name));
     }
 }
