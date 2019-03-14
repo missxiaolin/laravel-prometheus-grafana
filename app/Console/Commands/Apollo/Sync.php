@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Apollpo;
+namespace App\Console\Commands\Apollo;
 
 use Illuminate\Console\Command;
 
