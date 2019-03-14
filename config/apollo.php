@@ -17,7 +17,7 @@ return [
     'server' => env('APOLLO_HOST'),
 
     'query' => [
-        'app_id' => 'CMS',
+        'app_id' => 'wuc',
         'cluster' => 'default',
         'namespace' => 'application',
     ]
