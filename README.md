@@ -4,6 +4,25 @@
 
 [链接](https://github.com/ctripcorp/apollo)
 
+#### superviso配置
+
+~~~
+[program:apollo]
+process_name=%(program_name)s
+command=/usr/bin/php /var/www/html/artisan ue:apollo:sync
+autostart=true
+autorestart=true
+user=www
+redirect_stderr=true
+stdout_logfile=/var/www/html/storage/logs/apollo.log
+~~~
+
+#### crontab配置
+
+~~~
+*/1 * * * * /usr/bin/php /www/web/hsr/artisan ue:apollo:sync
+~~~
+
 ### go rpc
 
 [goRpc连接](https://github.com/missxiaolin/go-rpc)
