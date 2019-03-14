@@ -10,7 +10,7 @@
 return [
 
     'sync' => [
-        'redis' => false,
+        'redis' => true,
         'file' => true,
     ],
 
