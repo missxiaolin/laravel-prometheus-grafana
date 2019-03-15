@@ -11,7 +11,8 @@ return [
 
     'sync' => [
         'redis' => true,
-        'file' => true,
+        'fileYml' => true,
+        'file' => true
     ],
 
     'server' => env('APOLLO_HOST'),

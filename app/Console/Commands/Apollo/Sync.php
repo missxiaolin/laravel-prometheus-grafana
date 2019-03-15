@@ -112,9 +112,21 @@ class Sync extends Command
             $this->line('Saving To Redis ' . $fileName);
 
         }
-        if (config('apollo.sync.file', false)) {
+        if (config('apollo.sync.fileYml', false)) {
             Storage::disk('custom')->put($fileName . '.yml', Yaml::dump($item));
-            $this->line('Saving To File ' . $fileName);
+            $this->line('Saving To fileYml ' . $fileName);
+        }
+
+        if (config('apollo.sync.file', false)) {
+            $fileName = 'apollo/' . $fileName . '.php';
+            ksort($item);
+            $content = implode("\r\n", [
+                "<?php",
+                "return",
+                var_export($item, true) . ';'
+            ]);
+            Storage::disk('config')->put($fileName, $content);
+            $this->line('Saving To File '.$fileName);
         }
         $this->line('==================');
     }
