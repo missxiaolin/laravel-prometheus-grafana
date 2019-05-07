@@ -6,4 +6,5 @@ return [
             'TOKEN',
         ],
     ],
+    'rest' => env('DOMAIN_REST', 'http://www.xl-prometheus.com'),
 ];

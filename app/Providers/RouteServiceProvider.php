@@ -16,6 +16,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'App\Http\Controllers';
 
+    protected $restNamespace = 'App\Http\Controllers\Rest';
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -38,6 +40,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
+
+        $this->mapRestRoutes();
 
         //
     }
@@ -69,5 +73,14 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapRestRoutes()
+    {
+        Route::middleware('rest')
+            ->namespace($this->restNamespace)
+            ->domain(config('domain.rest'))
+            ->prefix('rest')
+            ->group(base_path('routes/rest.php'));
     }
 }
