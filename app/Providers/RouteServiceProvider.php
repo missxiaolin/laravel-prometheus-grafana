@@ -43,6 +43,9 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapRestRoutes();
 
+        // 普罗米修斯访问路径
+        $this->mapPrometheusRoutes();
+
         //
     }
 
@@ -56,8 +59,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 
     /**
@@ -70,9 +73,9 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
     }
 
     protected function mapRestRoutes()
@@ -82,5 +85,14 @@ class RouteServiceProvider extends ServiceProvider
             ->domain(config('domain.rest'))
             ->prefix('rest')
             ->group(base_path('routes/rest.php'));
+    }
+
+    protected function mapPrometheusRoutes()
+    {
+        Route::middleware('healthy')
+            ->namespace('App\Http\Controllers\Monitor')
+            ->domain(config('domain.healthy'))
+            ->prefix('monitor')
+            ->group(base_path('routes/prometheus.php'));
     }
 }
