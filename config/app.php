@@ -190,6 +190,8 @@ return [
         // apollo
         \App\Providers\ApolloProvider::class,
 
+        // Prometheus
+        \App\Providers\PrometheusProvider::class,
     ],
 
     /*

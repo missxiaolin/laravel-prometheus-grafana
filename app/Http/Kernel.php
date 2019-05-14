@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
         ],
 
         'rest' => [
+            \App\Http\Middleware\PrometheusMiddleWare::class,
         ],
     ];
 

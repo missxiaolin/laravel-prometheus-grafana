@@ -7,3 +7,5 @@
  */
 
 Route::any('/index/index', 'IndexController@index')->name('index.index');
+
+Route::any('/index/metrics', 'IndexController@doMetrics');
