@@ -8,4 +8,4 @@
 
 Route::any('/index/index', 'IndexController@index')->name('index.index');
 
-Route::any('/index/metrics', 'IndexController@doMetrics');
+Route::any('/index/metrics', 'IndexController@doMetrics')->name('index.do.metrics');
