@@ -82,7 +82,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('rest')
             ->namespace($this->restNamespace)
-            ->domain(config('domain.rest'))
+//            ->domain(config('domain.rest'))
             ->prefix('rest')
             ->group(base_path('routes/rest.php'));
     }
@@ -91,7 +91,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('healthy')
             ->namespace('App\Http\Controllers\Monitor')
-            ->domain(config('domain.healthy'))
+//            ->domain(config('domain.healthy'))
             ->prefix('monitor')
             ->group(base_path('routes/prometheus.php'));
     }
