@@ -14,6 +14,8 @@
         "laravel/tinker": "~1.0",
         "predis/predis": "^1.1",
         "prettus/l5-repository": "^2.6",
+        "symfony/cache": "^4.2",
+        "symfony/ldap": "^4.2",
         "symfony/yaml": "^4.2",
         "wangju/ding-notice": "^1.0",
         "xiaolin/enum": "^0.2.1",
