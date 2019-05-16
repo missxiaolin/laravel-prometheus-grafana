@@ -1,3 +1,12 @@
+### prometheus grafana
+
+~~~
+https://github.com/Jimdo/prometheus_client_php
+https://github.com/percona/grafana-dashboards
+https://github.com/prometheus/mysqld_exporter
+~~~
+
+
 ### Apollo 
 
 #### 文档
