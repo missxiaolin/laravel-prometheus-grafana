@@ -3,8 +3,8 @@
 return [
     'adapter' => \Prometheus\Storage\Redis::class,
     'active_collectibles' => [
-        //\App\Instrumentation\FPM::class,
-        //\App\Instrumentation\Opcache::class,
+//        \App\Instrumentation\FPM::class,
+//        \App\Instrumentation\Opcache::class,
     ],
     'namespace' => 'app',
     'namespace_http_server' => 'http',
