@@ -192,6 +192,7 @@ return [
 
         // Prometheus
         \App\Providers\PrometheusProvider::class,
+        \App\Providers\PrometheusServiceProvider::class
     ],
 
     /*
