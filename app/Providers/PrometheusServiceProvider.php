@@ -8,7 +8,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
+use Prometheus\CollectorRegistry;
+use Prometheus\Storage\Redis;
 
 class PrometheusServiceProvider extends ServiceProvider
 {
@@ -29,6 +32,16 @@ class PrometheusServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        dd(1);
+        $this->app->singleton('prometheus', function ($app) {
+
+            $config = $app['config']['prometheus'];
+
+            Redis::setPrefix($config['prefix'] . ':' . config('system.mac') . '_');
+
+            //php redis
+            $options = Arr::get($app['config'], 'database.redis.' . $config['conn']);
+
+            return new CollectorRegistry(new Redis($options));
+        });
     }
 }
