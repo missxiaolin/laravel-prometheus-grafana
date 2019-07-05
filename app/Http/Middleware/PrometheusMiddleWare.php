@@ -13,88 +13,57 @@ use Prometheus\Histogram;
 class PrometheusMiddleWare
 {
 
-    protected $config;
-
-    /**
-     * @var Request
-     */
-    protected $request;
-    /**
-     * @var CollectorRegistry
-     */
-    protected $registry;
     /**
      * @var Histogram
      */
     protected $histogram;
 
-    public function __construct(CollectorRegistry $registry)
+    /**
+     * @var CollectorRegistry
+     */
+    protected $registry;
+
+    protected $enable = false;
+
+    public function __construct()
     {
-        $this->registry = $registry;
-        $this->initRouteMetrics();
+
+        $this->enable = app('config')->get('prometheus.enable', true);
+        if ($this->enable) {
+            $this->registry = app()->make('prometheus');
+            $this->initRouteMetrics();
+        }
+
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-
-        if (!extension_loaded('Redis')) {
+        if (!$this->enable) {
             return $next($request);
         }
 
-        $start = $_SERVER['REQUEST_TIME_FLOAT'];
-
-        $this->request = $request;
+        $start = LARAVEL_START;
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
         $route_name = $this->getRouteName();
+
+        if ($route_name == 'unknow' || $route_name == 'prometheus.metrics' || strstr($route_name, 'horizon')) {
+            return $next($request);
+        }
+
         $method = $request->getMethod();
         $status = $response->getStatusCode();
         $duration = microtime(true) - $start;
         $duration_milliseconds = $duration * 1000.0;
         $this->countRequest($route_name, $method, $status, $duration_milliseconds);
         return $response;
-
-    }
-
-    public function initRouteMetrics()
-    {
-        $namespace = config('prometheus.namespace_http_server');
-        $buckets = config('prometheus.histogram_buckets');
-        $labelNames = $this->getRequestCounterLabelNames();
-        $name = 'server_requests_seconds';
-        $help = 'http requests';
-        $this->histogram = $this->registry->getOrRegisterHistogram(
-            $namespace, $name, $help, $labelNames, $buckets
-        );
-    }
-
-    /**
-     * @return array
-     */
-    protected function getRequestCounterLabelNames()
-    {
-        return [
-            'route', 'method', 'status_code',
-        ];
-    }
-
-    /**
-     * @param $route
-     * @param $method
-     * @param $statusCode
-     * @param $duration_milliseconds
-     */
-    public function countRequest($route, $method, $statusCode, $duration_milliseconds)
-    {
-        $labelValues = [(string)$route, (string)$method, (string)$statusCode];
-        $this->histogram->observe($duration_milliseconds, $labelValues);
     }
 
     /**
@@ -104,6 +73,43 @@ class PrometheusMiddleWare
      */
     protected function getRouteName()
     {
-        return \Route::currentRouteName() ?: 'unnamed';
+        return \Route::currentRouteName() ?: 'unknow';
+    }
+
+    protected function initRouteMetrics()
+    {
+        $namespace = config('prometheus.namespace');
+        $buckets = config('prometheus.histogram_buckets');
+
+        $labelNames = $this->getRequestCounterLabelNames();
+
+
+        $name = config('prometheus.name');
+        $help = config('prometheus.help');
+        $this->histogram = $this->registry->getOrRegisterHistogram(
+            $namespace, $name, $help, $labelNames, $buckets
+        );
+    }
+
+    protected function getRouteNames()
+    {
+        $routeNames = [];
+        foreach (\Route::getRoutes() as $route) {
+            $routeNames[] = $route->getName() ?: "unknow";
+        }
+        return $routeNames;
+    }
+
+    protected function countRequest($route, $method, $statusCode, $duration_milliseconds)
+    {
+        $labelValues = [(string)$route, (string)$method, (string)$statusCode, 'php'];
+        $this->histogram->observe($duration_milliseconds, $labelValues);
+    }
+
+    protected function getRequestCounterLabelNames()
+    {
+        return [
+            'route', 'method', 'status_code','lang'
+        ];
     }
 }
