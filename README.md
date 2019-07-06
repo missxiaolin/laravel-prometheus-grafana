@@ -6,6 +6,39 @@ https://github.com/percona/grafana-dashboards
 https://github.com/prometheus/mysqld_exporter
 ~~~
 
+### 图表搭建
+
+#### 请求量
+
+~~~
+sum(irate(http_server_requests_seconds_count{lang=\"php\",env=\"$env\",job=\"$job\",instance=~\"[[instance]]\"}[1m]))
+~~~
+
+#### 总体响应时间
+
+~~~
+sum(increase(http_server_requests_seconds_bucket{status_code=\"200\",lang=\"php\"}[1m]))by(le)
+~~~
+
+## 单个接口图表
+
+#### 状态码
+
+~~~
+sum(http_server_requests_seconds_count{route=~\"[[route]]\",job=\"$job\",instance=~\"[[instance]]\",lang=\"php\"})by(status_code)
+~~~
+
+#### 响应延迟时间
+
+~~~
+sum(increase(http_server_requests_seconds_bucket{route=~\"[[route]]\",status_code=\"200\",lang=\"php\"}[1m]))by(le)
+~~~
+
+#### 吞吐量
+
+~~~
+sum(irate(http_server_requests_seconds_count{env=\"$env\",job=\"$job\",instance=~\"[[instance]]\",route=~\"[[route]]\"}[1m]))by(route)
+~~~
 
 ### Apollo 
 
